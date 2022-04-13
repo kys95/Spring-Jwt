@@ -1,5 +1,6 @@
 package com.kys95.jwt.config;
 
+import com.kys95.jwt.config.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(corsFilter)  //@CrossOrigin(인증없는 경우), security filter에 등록(인증있는 경우)
                 .formLogin().disable()  //jwt 서버이므로 formLogin 사용x
                 .httpBasic().disable()
+                .addFilter(new JwtAuthenticationFilter(authenticationManager()))   //AuthenticationManager
                 .authorizeRequests()
                 .antMatchers("/api/v1/usr/**")
                 .access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
